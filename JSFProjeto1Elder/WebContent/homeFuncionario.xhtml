@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Inicio</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:layout fullPage="true">
+			<p:growl />
+			<p:layoutUnit position="north" header="">
+				<p:menubar>
+					<p:menuitem value="Home" url="homeFuncionario.xhtml"
+						icon="ui-icon-home" />
+					<p:menuitem value="Meus Dados" url="dadosFuncionario.xhtml"
+						icon="ui-icon-pencil" />
+						<p:submenu label="Relatórios" icon="ui-icon-print">
+							<p:menuitem value="Todas Solicitações" url="listaSolicitacao.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:menuitem value="Não Atendidas" url="listaNaoAtendidas.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:separator />
+							<p:menuitem value="Pesquisar" url="relatorios.xhtml"
+								icon="ui-icon-search" />
+						</p:submenu>
+						<p:submenu label="Retorno" icon="ui-icon-document">
+							<p:menuitem value="Retornar" url="cadRetorno.xhtml"
+								icon="ui-icon-clipboard" />
+							<p:menuitem value="Listar" url="listaRetorno.xhtml"
+								icon="ui-icon-script" />
+						</p:submenu>
+					<f:facet name="options">
+						<h:panelGrid columns="2">
+							<p:commandButton value="Sair" ajax="false"
+								action="#{login.deslogar}" immediate="true" />
+							<p:link
+								href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+								target="_blank">
+								<p:graphicImage url="/images/delta.png" />
+							</p:link>
+						</h:panelGrid>
+					</f:facet>
+				</p:menubar>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+			<h2 style="text-align:center;">Solicitações por data</h2>
+			<p:chart type="bar" model="#{solicitacaoControllerElder.graficoSolData}" style="height:250px"/>
+			<h2 style="text-align:center;">Laboratório e Computador por data</h2>
+			<p:chart type="bar" model="#{solicitacaoControllerElder.graficoTeste}" style="height:250px"/>
+			
+			</p:layoutUnit>
+
+
+			<p:layoutUnit position="south" size="95" footer="">
+				<div>
+					<h:outputText
+						style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+						value="5º Período/DevWeb2" />
+					<br />
+					<h:outputText style="font-size:14px;"
+						value="Sistemas de Informação" />
+				</div>
+				<div style="float: right; margin-top: -37px;">
+					<p:link
+						href="https://www.facebook.com/profile.php?id=100009047563244"
+						target="_blank">
+						<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+						<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://twitter.com/elderteck" target="_blank">
+						<p:graphicImage url="/images/twiter.png" />
+					</p:link>
+					<br />
+					<h:outputText value="Élder Rezende" style="font-size:16px;" />
+				</div>
+			</p:layoutUnit>
+		</p:layout>
+	</h:form>
+</h:body>
+
+</html>

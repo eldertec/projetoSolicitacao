@@ -1,0 +1,196 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Retornos</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:layout fullPage="true">
+
+			<p:growl />
+
+			<p:layoutUnit position="north" header="">
+				<p:menubar>
+					<p:menuitem value="Home" url="homeFuncionario.xhtml"
+						icon="ui-icon-home" />
+					<p:menuitem value="Meus Dados" url="dadosFuncionario.xhtml"
+						icon="ui-icon-pencil" />
+						<p:submenu label="Relatórios" icon="ui-icon-print">
+							<p:menuitem value="Todas Solicitações" url="listaSolicitacao.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:menuitem value="Não Atendidas" url="listaNaoAtendidas.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:separator />
+							<p:menuitem value="Pesquisar" url="relatorios.xhtml"
+								icon="ui-icon-search" />
+						</p:submenu>
+						<p:submenu label="Retorno" icon="ui-icon-document">
+							<p:menuitem value="Retornar" url="cadRetorno.xhtml"
+								icon="ui-icon-clipboard" />
+							<p:menuitem value="Listar" url="listaRetorno.xhtml"
+								icon="ui-icon-script" />
+						</p:submenu>
+					<f:facet name="options">
+						<h:panelGrid columns="2">
+							<p:commandButton value="Sair" ajax="false"
+								action="#{login.deslogar}" immediate="true" />
+							<p:link
+								href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+								target="_blank">
+								<p:graphicImage url="/images/delta.png" />
+							</p:link>
+						</h:panelGrid>
+					</f:facet>
+				</p:menubar>
+			</p:layoutUnit>
+
+
+			<p:layoutUnit position="center" resizable="true"
+				header="Retorno das Solicitações" size="30%">
+				<p:panelGrid columns="2" cellpadding="5" style="width:100%;">
+					<f:facet name="header">
+						<p:outputLabel value="Cadastrar" />
+					</f:facet>
+					<p:outputLabel for="dtr" value="Data do Retorno: " />
+					<p:calendar id="dtr"
+						value="#{retornoSolicitacaoControllerElder.retorno.dataRetorno}"
+						pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" required="true"
+						requiredMessage="A Data é obrigatória" autoWidth="false"
+						style="width: 100%;" />
+					<p:outputLabel value="Solicitação: " for="sol" />
+					<p:selectOneMenu id="sol" converter="solicitacaoConverter"
+						required="true" requiredMessage="Selecione a Solicitação!"
+						value="#{retornoSolicitacaoControllerElder.solSelecionada}"
+						effect="fade" var="s" filter="true" filterMatchMode="startsWith"
+						autoWidth="false" style="width: 83%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{solicitacaoControllerElder.listarNaoAtendidas}"
+							var="solicitacao" itemLabel="#{solicitacao.id}"
+							itemValue="#{solicitacao}" />
+						<p:column style="width:10%">
+							<h:outputText value="#{s.id}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{s.dataSolicitacao}">
+								<f:convertDateTime pattern="dd/MM/yyyy"
+									timeZone="America/Sao_Paulo" />
+							</h:outputText>
+						</p:column>
+						<p:column>
+							<h:outputText value="#{s.tipo.nome}" />
+						</p:column>
+					</p:selectOneMenu>
+					<p:outputLabel value="Funcionário: " for="func" />
+					<p:selectOneMenu id="func" converter="funcionarioConverter"
+						required="true" requiredMessage="Selecione o Funcionário!"
+						value="#{retornoSolicitacaoControllerElder.funcSelecionado}"
+						autoWidth="false" style="width: 83%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{funcionarioControllerElder.logado}"
+							var="f" itemLabel="#{f.nome}" itemValue="#{f}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Status: " for="status" />
+					<p:selectOneMenu id="status" converter="statusRetornoConverter"
+						required="true" requiredMessage="Selecione o Status do Retorno!"
+						value="#{retornoSolicitacaoControllerElder.statusSelecionado}"
+						autoWidth="false" style="width: 83%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{statusRetornoControllerElder.listar}"
+							var="st" itemLabel="#{st.descricao}" itemValue="#{st}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="desc" value="Descrição: " />
+					<p:inputTextarea id="desc"
+						value="#{retornoSolicitacaoControllerElder.retorno.descricao}"
+						label="Descrição " required="true"
+						requiredMessage="A Descrição do retorno é obrigatória"
+						autoWidth="false" style="width: 97%;">
+						<f:validateLength maximum="200" />
+					</p:inputTextarea>
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Limpar" ajax="false" immediate="true"
+								action="#{retornoSolicitacaoControllerElder.limparCampos}"
+								style="background: #ff0000;" icon="ui-icon-cancel" />
+							<p:commandButton value="Salvar"
+								action="#{retornoSolicitacaoControllerElder.salvar}"
+								ajax="false" style="background: #339933;" icon="ui-icon-check" />
+						</div>
+					</f:facet>
+				</p:panelGrid>
+			</p:layoutUnit>
+
+
+			<p:layoutUnit position="east" size="70%" header="Cadastrados"
+				resizable="true" effect="drop">
+				<p:dataTable value="#{retornoSolicitacaoControllerElder.listar}"
+					var="r" resizableColumns="true"
+					emptyMessage="Nenhum Retorno cadastrado">
+					<f:facet name="header">
+						<h:outputText value="Retornos das Solicitações" />
+					</f:facet>
+					<p:column headerText="Id" style="width:5%;text-align:center;">
+						<h:outputText value="#{r.id}" />
+					</p:column>
+					<p:column headerText="Solicitação"
+						style="width:12%;text-align:center;">
+						<h:outputText value="#{r.solicitacao.id}" />
+					</p:column>
+					<p:column headerText="Funcionário"
+						style="width:12%;text-align:center;">
+						<h:outputText value="#{r.funcionario.nome}" />
+					</p:column>
+					<p:column headerText="Data do Retorno"
+						style="width:16%;text-align:center;">
+						<h:outputText value="#{r.dataRetorno}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Status" style="width:15%;text-align:center;">
+						<h:outputText value="#{r.status.descricao}" />
+					</p:column>
+					<p:column headerText="Descrição"
+						style="width:40%;text-align:center;">
+						<h:outputText value="#{r.descricao}" />
+					</p:column>
+				</p:dataTable>
+
+
+
+			</p:layoutUnit>
+
+			<p:layoutUnit position="south" size="95" footer="">
+				<div>
+					<h:outputText
+						style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+						value="5º Período/DevWeb2" />
+					<br />
+					<h:outputText style="font-size:14px;"
+						value="Sistemas de Informação" />
+				</div>
+				<div style="float: right; margin-top: -37px;">
+					<p:link
+						href="https://www.facebook.com/profile.php?id=100009047563244"
+						target="_blank">
+						<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+						<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://twitter.com/elderteck" target="_blank">
+						<p:graphicImage url="/images/twiter.png" />
+					</p:link>
+					<br />
+					<h:outputText value="Élder Rezende" style="font-size:16px;" />
+				</div>
+			</p:layoutUnit>
+
+		</p:layout>
+	</h:form>
+</h:body>
+
+</html>

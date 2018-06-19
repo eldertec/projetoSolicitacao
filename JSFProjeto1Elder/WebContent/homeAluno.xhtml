@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Início</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:layout fullPage="true">
+			<p:growl />
+			<p:layoutUnit position="north" header="">
+				<p:menubar>
+					<p:menuitem value="Home" url="homeAluno.xhtml" icon="ui-icon-home" />
+					<p:menuitem value="Meus Dados" url="cadAluno.xhtml"
+						icon="ui-icon-pencil" />
+					<p:submenu label="Solicitações" icon="ui-icon-wrench">
+						<p:menuitem value="Nova Solicitação" url="cadSolicitacao.xhtml"
+							icon="ui-icon-plus" />
+						<p:menuitem value="Retornos" url="listaRetornoAluno.xhtml"
+							icon="ui-icon-search" />
+					</p:submenu>
+					<f:facet name="options">
+						<h:panelGrid columns="2">
+							<p:commandButton value="Sair" ajax="false"
+								action="#{login.deslogar}" immediate="true" />
+							<p:link
+								href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+								target="_blank">
+								<p:graphicImage url="/images/delta.png" />
+							</p:link>
+						</h:panelGrid>
+					</f:facet>
+				</p:menubar>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+			<div style="text-align:center;">
+			<p:graphicImage url="/images/festa_junina.png" />
+			</div>
+			</p:layoutUnit>
+
+
+			<p:layoutUnit position="south" size="95" footer="">
+				<div>
+					<h:outputText
+						style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+						value="5º Período/DevWeb2" />
+					<br />
+					<h:outputText style="font-size:14px;"
+						value="Sistemas de Informação" />
+				</div>
+				<div style="float: right; margin-top: -37px;">
+					<p:link
+						href="https://www.facebook.com/profile.php?id=100009047563244"
+						target="_blank">
+						<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+						<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://twitter.com/elderteck" target="_blank">
+						<p:graphicImage url="/images/twiter.png" />
+					</p:link>
+					<br />
+					<h:outputText value="Élder Rezende" style="font-size:16px;" />
+				</div>
+			</p:layoutUnit>
+		</p:layout>
+	</h:form>
+</h:body>
+
+</html>

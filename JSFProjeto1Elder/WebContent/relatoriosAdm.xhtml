@@ -1,0 +1,238 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Pesquisas</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+		<p:growl />
+		<p:layoutUnit position="north" header="">
+			<h:form>
+			<p:menubar>
+				<p:menuitem value="Home" url="home.xhtml" icon="ui-icon-home" />
+					<p:submenu label="Administração" icon="ui-icon-gear">
+						<p:submenu label="Cadastros" icon="ui-icon-pencil">
+							<p:menuitem value="Funcionários" url="cadFuncionario.xhtml"
+								icon="ui-icon-wrench" />
+							<p:menuitem value="Computadores" url="cadPc.xhtml"
+								icon="ui-icon-disk" />
+							<p:menuitem value="Laboratórios" url="cadLab.xhtml"
+								icon="ui-icon-calculator" />
+							<p:menuitem value="Tipo de Solicitação" url="cadTipo.xhtml"
+								icon="ui-icon-document" />
+							<p:menuitem value="Status do Retorno" url="cadStatus.xhtml"
+								icon="ui-icon-comment" />
+						</p:submenu>
+						<p:submenu label="Relatórios" icon="ui-icon-print">
+							<p:menuitem value="Todas Solicitações" url="listaSolicitacaoAdm.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:menuitem value="Não Atendidas" url="listaNaoAtendidasAdm.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:separator />
+							<p:menuitem value="Pesquisar" url="relatoriosAdm.xhtml"
+								icon="ui-icon-search" />
+						</p:submenu>
+						<p:submenu label="Retorno" icon="ui-icon-document">
+							<p:menuitem value="Listar" url="listaRetornoAdm.xhtml"
+								icon="ui-icon-script" />
+						</p:submenu>
+					</p:submenu>
+						<p:menuitem value="Usuários" url="usuarios.xhtml"
+							icon="ui-icon-document" />
+				<f:facet name="options">
+					<h:panelGrid columns="2">
+						<p:commandButton value="Sair" ajax="false"
+							action="#{login.deslogar}" immediate="true" />
+						<p:link
+							href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+							target="_blank">
+							<p:graphicImage url="/images/delta.png" />
+						</p:link>
+					</h:panelGrid>
+				</f:facet>
+			</p:menubar>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" resizable="true" header="Pesquisar"
+			size="30%">
+			<h:form>
+				<p:panelGrid columns="2" cellpadding="5" style="width:100%;">
+					<f:facet name="header">
+						<p:outputLabel value="Por Computador" />
+					</f:facet>
+					<p:outputLabel value="Laboratório: " for="lab" />
+					<p:selectOneMenu id="lab" required="true"
+						requiredMessage="Selecione o laboratório!"
+						value="#{solicitacaoControllerElder.laboratorio}"
+						autoWidth="false" style="width: 85%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{laboratorioControllerElder.listar}"
+							var="l" itemLabel="#{l.numero}" itemValue="#{l.numero}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Computador: " for="com" />
+					<p:selectOneMenu id="com" required="true"
+						requiredMessage="Selecione o computador!"
+						value="#{solicitacaoControllerElder.computador}" autoWidth="false"
+						style="width: 85%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{computadorControllerElder.listar}" var="c"
+							itemLabel="#{c.numero}" itemValue="#{c.numero}" />
+					</p:selectOneMenu>
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Buscar"
+								action="#{solicitacaoControllerElder.buscarPcAdm}" ajax="false"
+								icon="ui-icon-search" style="background: #0000CD;" />
+						</div>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+			<p:separator />
+			<h:form>
+				<p:panelGrid columns="2" cellpadding="5" style="width:100%;">
+					<f:facet name="header">
+						<p:outputLabel value="Por Laboratório" />
+					</f:facet>
+					<p:outputLabel value="Laboratório: " for="lab" />
+					<p:selectOneMenu id="lab" required="true"
+						requiredMessage="Selecione o laboratório!"
+						value="#{solicitacaoControllerElder.laboratorio}"
+						autoWidth="false" style="width: 85%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{laboratorioControllerElder.listar}"
+							var="l" itemLabel="#{l.numero}" itemValue="#{l.numero}" />
+					</p:selectOneMenu>
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Buscar"
+								action="#{solicitacaoControllerElder.buscarLabAdm}" ajax="false"
+								style="background: #0000CD;" icon="ui-icon-search" />
+						</div>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+			<p:separator />
+			<h:form>
+				<p:panelGrid columns="2" cellpadding="5" style="width:100%;">
+					<f:facet name="header">
+						<p:outputLabel value="Por Tipo" />
+					</f:facet>
+					<p:outputLabel value="Tipo de Solicitação: " for="tipo" />
+					<p:selectOneMenu id="tipo" required="true"
+						requiredMessage="Selecione o tipo!"
+						value="#{solicitacaoControllerElder.tipo}" autoWidth="false"
+						style="width: 81%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{tipoSolicitacaoControllerElder.listar}"
+							var="t" itemLabel="#{t.nome}" itemValue="#{t.nome}" />
+					</p:selectOneMenu>
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Buscar"
+								action="#{solicitacaoControllerElder.buscarTipoAdm}" ajax="false"
+								style="background: #0000CD;" icon="ui-icon-search" />
+						</div>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+			<p:separator />
+			<h:form>
+				<p:panelGrid columns="2" cellpadding="5" style="width:100%;">
+					<f:facet name="header">
+						<p:outputLabel value="Por Data" />
+					</f:facet>
+					<p:outputLabel value="Início: " for="dti" />
+					<p:calendar id="dti" value="#{solicitacaoControllerElder.inicio}"
+						pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" required="true"
+						requiredMessage="Informe a data inicial" size="30" />
+					<p:outputLabel value="Fim: " for="dtf" />
+					<p:calendar id="dtf" value="#{solicitacaoControllerElder.fim}"
+						pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" required="true"
+						requiredMessage="Informe a data final" size="30" />
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Buscar"
+								action="#{solicitacaoControllerElder.buscarDataAdm}" ajax="false"
+								style="background: #0000CD;" icon="ui-icon-search" />
+						</div>
+					</f:facet>
+				</p:panelGrid>
+
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="east" size="70%" header="Encontrados"
+			resizable="true" effect="drop">
+			<h:form>
+				<p:dataTable value="#{solicitacaoControllerElder.listaPesquisa}"
+					var="s" resizableColumns="true"
+					emptyMessage="Nenhuma Solicitação encontrada">
+
+					<f:facet name="header">
+						<h:outputText value="Solicitações" />
+					</f:facet>
+					<p:column headerText="Id" style="width:5%;text-align:center;">
+						<h:outputText value="#{s.id}" />
+					</p:column>
+					<p:column headerText="Laboratório"
+						style="width:10%;text-align:center;">
+						<h:outputText value="#{s.laboratorio.numero}" />
+					</p:column>
+					<p:column headerText="Computador"
+						style="width:10%;text-align:center;">
+						<h:outputText value="#{s.computador.numero}" />
+					</p:column>
+					<p:column headerText="Data" style="width:11%;text-align:center;">
+						<h:outputText value="#{s.dataSolicitacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Aluno" style="width:14%;text-align:center;">
+						<h:outputText value="#{s.aluno.nome}" />
+					</p:column>
+					<p:column headerText="Tipo de Solicitação"
+						style="width:15%;text-align:center;">
+						<h:outputText value="#{s.tipo.nome}" />
+					</p:column>
+					<p:column headerText="Descrição"
+						style="width:35%;text-align:center;">
+						<h:outputText value="#{s.descricao}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" size="95" footer="">
+			<div>
+				<h:outputText
+					style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+					value="5º Período/DevWeb2" />
+				<br />
+				<h:outputText style="font-size:14px;" value="Sistemas de Informação" />
+			</div>
+			<div style="float: right; margin-top: -37px;">
+				<p:link
+					href="https://www.facebook.com/profile.php?id=100009047563244"
+					target="_blank">
+					<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+				</p:link>
+				<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+					<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+				</p:link>
+				<p:link href="https://twitter.com/elderteck" target="_blank">
+					<p:graphicImage url="/images/twiter.png" />
+				</p:link>
+				<br />
+				<h:outputText value="Élder Rezende" style="font-size:16px;" />
+			</div>
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+
+</html>

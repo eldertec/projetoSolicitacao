@@ -1,0 +1,155 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Usuários</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:layout fullPage="true">
+			<p:growl />
+			<p:layoutUnit position="north" header="">
+				<h:form>
+					<p:menubar>
+						<p:menuitem value="Home" url="home.xhtml" icon="ui-icon-home" />
+						<p:submenu label="Administração" icon="ui-icon-gear">
+							<p:submenu label="Cadastros" icon="ui-icon-pencil">
+								<p:menuitem value="Funcionários" url="cadFuncionario.xhtml"
+									icon="ui-icon-wrench" />
+								<p:menuitem value="Computadores" url="cadPc.xhtml"
+									icon="ui-icon-disk" />
+								<p:menuitem value="Laboratórios" url="cadLab.xhtml"
+									icon="ui-icon-calculator" />
+								<p:menuitem value="Tipo de Solicitação" url="cadTipo.xhtml"
+									icon="ui-icon-document" />
+								<p:menuitem value="Status do Retorno" url="cadStatus.xhtml"
+									icon="ui-icon-comment" />
+							</p:submenu>
+							<p:submenu label="Relatórios" icon="ui-icon-print">
+								<p:menuitem value="Todas Solicitações"
+									url="listaSolicitacaoAdm.xhtml" icon="ui-icon-folder-open" />
+								<p:menuitem value="Não Atendidas"
+									url="listaNaoAtendidasAdm.xhtml" icon="ui-icon-folder-open" />
+								<p:separator />
+								<p:menuitem value="Pesquisar" url="relatoriosAdm.xhtml"
+									icon="ui-icon-search" />
+							</p:submenu>
+							<p:submenu label="Retorno" icon="ui-icon-document">
+								<p:menuitem value="Listar" url="listaRetornoAdm.xhtml"
+									icon="ui-icon-script" />
+							</p:submenu>
+						</p:submenu>
+						<p:menuitem value="Usuários" url="usuarios.xhtml"
+							icon="ui-icon-document" />
+						<f:facet name="options">
+							<h:panelGrid columns="2">
+								<p:commandButton value="Sair" ajax="false"
+									action="#{login.deslogar}" immediate="true" />
+								<p:link
+									href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+									target="_blank">
+									<p:graphicImage url="/images/delta.png" />
+								</p:link>
+							</h:panelGrid>
+						</f:facet>
+					</p:menubar>
+				</h:form>
+			</p:layoutUnit>
+			<p:layoutUnit position="center" resizable="true"
+				header="Usuários Cadastrados" size="100%">
+				<p:dataTable value="#{alunoControllerElder.listar}" var="a"
+					resizableColumns="true" emptyMessage="Nenhum Aluno Cadastrado"
+					rows="5" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+					<f:facet name="header">
+						<h:outputText value="Alunos" />
+					</f:facet>
+					<p:column headerText="Id" style="width:8%;text-align:center;">
+						<h:outputText value="#{a.id}" />
+					</p:column>
+					<p:column headerText="Nome" style="width:18%;text-align:center;">
+						<h:outputText value="#{a.nome}" />
+					</p:column>
+					<p:column headerText="Matrícula"
+						style="width:10%;text-align:center;">
+						<h:outputText value="#{a.matricula}" />
+					</p:column>
+					<p:column headerText="CPF" style="width:12%;text-align:center;">
+						<h:outputText value="#{a.cpf}" />
+					</p:column>
+					<p:column headerText="Data de Nascimento"
+						style="width:17%;text-align:center;">
+						<h:outputText value="#{a.dataNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Email" style="width:15%;text-align:center;">
+						<h:outputText value="#{a.email}" />
+					</p:column>
+				</p:dataTable>
+				<br/>
+				<br/>
+				<br/>
+				<p:dataTable value="#{funcionarioControllerElder.listar}" var="f"
+					resizableColumns="true"
+					emptyMessage="Nenhum Funcionário Cadastrado" rows="5"
+					paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+					<f:facet name="header">
+						<h:outputText value="Funcionários" />
+					</f:facet>
+					<p:column headerText="Id" style="width:10%;text-align:center;">
+						<h:outputText value="#{f.id}" />
+					</p:column>
+					<p:column headerText="Nome" style="width:20%;text-align:center;">
+						<h:outputText value="#{f.nome}" />
+					</p:column>
+					<p:column headerText="CPF" style="width:14%;text-align:center;">
+						<h:outputText value="#{f.cpf}" />
+					</p:column>
+					<p:column headerText="Data de Nascimento"
+						style="width:18%;text-align:center;">
+						<h:outputText value="#{f.dataNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Email" style="width:20%;text-align:center;">
+						<h:outputText value="#{f.email}" />
+					</p:column>
+				</p:dataTable>
+			</p:layoutUnit>
+			<p:layoutUnit position="south" size="95" footer="">
+				<div>
+					<h:outputText
+						style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+						value="5º Período/DevWeb2" />
+					<br />
+					<h:outputText style="font-size:14px;"
+						value="Sistemas de Informação" />
+				</div>
+				<div style="float: right; margin-top: -37px;">
+					<p:link
+						href="https://www.facebook.com/profile.php?id=100009047563244"
+						target="_blank">
+						<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+						<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://twitter.com/elderteck" target="_blank">
+						<p:graphicImage url="/images/twiter.png" />
+					</p:link>
+					<br />
+					<h:outputText value="Élder Rezende" style="font-size:16px;" />
+				</div>
+			</p:layoutUnit>
+		</p:layout>
+	</h:form>
+</h:body>
+
+</html>

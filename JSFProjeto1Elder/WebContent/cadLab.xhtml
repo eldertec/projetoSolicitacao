@@ -1,0 +1,156 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Laboratórios</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+
+	<h:form>
+		<p:layout fullPage="true">
+			<p:growl />
+			<p:layoutUnit position="north" header="">
+				<p:menubar>
+					<p:menuitem value="Home" url="home.xhtml" icon="ui-icon-home" />
+					<p:submenu label="Administração" icon="ui-icon-gear">
+						<p:submenu label="Cadastros" icon="ui-icon-pencil">
+							<p:menuitem value="Funcionários" url="cadFuncionario.xhtml"
+								icon="ui-icon-wrench" />
+							<p:menuitem value="Computadores" url="cadPc.xhtml"
+								icon="ui-icon-disk" />
+							<p:menuitem value="Laboratórios" url="cadLab.xhtml"
+								icon="ui-icon-calculator" />
+							<p:menuitem value="Tipo de Solicitação" url="cadTipo.xhtml"
+								icon="ui-icon-document" />
+							<p:menuitem value="Status do Retorno" url="cadStatus.xhtml"
+								icon="ui-icon-comment" />
+						</p:submenu>
+						<p:submenu label="Relatórios" icon="ui-icon-print">
+							<p:menuitem value="Todas Solicitações" url="listaSolicitacaoAdm.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:menuitem value="Não Atendidas" url="listaNaoAtendidasAdm.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:separator />
+							<p:menuitem value="Pesquisar" url="relatoriosAdm.xhtml"
+								icon="ui-icon-search" />
+						</p:submenu>
+						<p:submenu label="Retorno" icon="ui-icon-document">
+							<p:menuitem value="Listar" url="listaRetornoAdm.xhtml"
+								icon="ui-icon-script" />
+						</p:submenu>
+					</p:submenu>
+						<p:menuitem value="Usuários" url="usuarios.xhtml"
+							icon="ui-icon-document" />
+					<f:facet name="options">
+						<h:panelGrid columns="2">
+							<p:commandButton value="Sair" ajax="false"
+								action="#{login.deslogar}" immediate="true" />
+							<p:link
+								href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+								target="_blank">
+								<p:graphicImage url="/images/delta.png" />
+							</p:link>
+						</h:panelGrid>
+					</f:facet>
+				</p:menubar>
+			</p:layoutUnit>
+			<p:layoutUnit position="center" resizable="true"
+				header="Laboratórios" size="30%">
+				<p:panelGrid columns="2" style="width:100%;">
+					<f:facet name="header">
+						<p:outputLabel value="Cadastro" />
+					</f:facet>
+					<p:outputLabel for="numLab" value="Número: " />
+					<p:inputText id="numLab"
+						value="#{laboratorioControllerElder.laboratorio.numero}"
+						required="true"
+						requiredMessage="O número do laboratório deve ser informado"
+						validatorMessage="O número deve ser maior que zero"
+						label="Número: ">
+						<f:validateLongRange minimum="1" />
+					</p:inputText>
+					<p:outputLabel for="descLab" value="Descrição: " />
+					<p:inputText id="descLab"
+						value="#{laboratorioControllerElder.laboratorio.descricao}"
+						label="Descrição "></p:inputText>
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Limpar" immediate="true" ajax="false"
+								icon="ui-icon-cancel" style="background: #ff0000;"
+								action="#{laboratorioControllerElder.limparCampos}" />
+							<p:commandButton value="Salvar"
+								action="#{laboratorioControllerElder.salvar}" ajax="false"
+								icon="ui-icon-check" style="background: #339933;" />
+						</div>
+					</f:facet>
+				</p:panelGrid>
+			</p:layoutUnit>
+			<p:layoutUnit position="east" size="70%" header="Cadastrados"
+				resizable="true" effect="drop">
+				<p:dataTable value="#{laboratorioControllerElder.listar}" var="l"
+					resizableColumns="true"
+					emptyMessage="Nenhum Laboratório Cadastrado">
+					<f:facet name="header">
+						<h:outputText value="Laboratórios" />
+					</f:facet>
+					<p:column headerText="Id" style="width:14%;text-align:center;">
+						<h:outputText value="#{l.id}" />
+					</p:column>
+					<p:column headerText="Número" style="width:20%;text-align:center;">
+						<h:outputText value="#{l.numero}" />
+					</p:column>
+					<p:column headerText="Descrição"
+						style="width:46%;text-align:center;">
+						<h:outputText value="#{l.descricao}" />
+					</p:column>
+					<p:column headerText="Ações" style="width:20%;text-align:center;">
+						<p:commandButton value="Editar"
+							action="#{laboratorioControllerElder.alterar}"
+							icon="ui-icon-pencil" ajax="false" immediate="true"
+							style="background: #000099;">
+							<f:setPropertyActionListener value="#{l}"
+								target="#{laboratorioControllerElder.laboratorio}" />
+						</p:commandButton>
+						<p:commandButton value="Excluir"
+							action="#{laboratorioControllerElder.excluir}"
+							onclick="return confirm('Confirma a exclusão do Laboratório nº: #{l.numero} com Id = #{l.id} ?')"
+							icon="ui-icon-trash" ajax="false" immediate="true"
+							style="background: #ff0000;">
+							<f:setPropertyActionListener value="#{l}"
+								target="#{laboratorioControllerElder.laboratorio}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:layoutUnit>
+			<p:layoutUnit position="south" size="95" footer="">
+				<div>
+					<h:outputText
+						style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+						value="5º Período/DevWeb2" />
+					<br />
+					<h:outputText style="font-size:14px;"
+						value="Sistemas de Informação" />
+				</div>
+				<div style="float: right; margin-top: -37px;">
+					<p:link
+						href="https://www.facebook.com/profile.php?id=100009047563244"
+						target="_blank">
+						<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+						<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://twitter.com/elderteck" target="_blank">
+						<p:graphicImage url="/images/twiter.png" />
+					</p:link>
+					<br />
+					<h:outputText value="Élder Rezende" style="font-size:16px;" />
+				</div>
+			</p:layoutUnit>
+		</p:layout>
+	</h:form>
+</h:body>
+</html>

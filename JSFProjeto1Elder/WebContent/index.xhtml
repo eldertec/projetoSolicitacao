@@ -1,0 +1,161 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Faculdade Delta</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+
+	<p:layout fullPage="true">
+
+		<p:growl />
+		<p:layoutUnit position="north" header="">
+			<h:form>
+				<p:menubar>
+					<f:facet name="options">
+						<h:panelGrid columns="3">
+							<p:outputLabel for="tema" value="Escolha o Tema" />
+							<p:themeSwitcher id="tema" style="width:100px"
+								value="#{tema.tema}">
+								<f:selectItems value="#{tema.temas}" var="tema"
+									itemLabel="#{tema}" itemValue="#{tema}" />
+								<f:ajax />
+							</p:themeSwitcher>
+							<p:link
+								href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+								target="_blank">
+								<p:graphicImage url="/images/delta.png" />
+							</p:link>
+						</h:panelGrid>
+
+					</f:facet>
+
+				</p:menubar>
+			</h:form>
+		</p:layoutUnit>
+
+
+		<p:layoutUnit position="center">
+			<h:form>
+
+
+				<p:panelGrid columns="2" style="margin:auto;">
+					<f:facet name="header">
+						<h:outputText value="Login" />
+					</f:facet>
+					<p:outputLabel value="Email:" for="email" />
+					<p:inputText id="email" value="#{login.usuario.login}" required="true" />
+					<p:outputLabel value="Senha:" for="senha" />
+					<p:password id="senha" value="#{login.usuario.senha}" required="true" />
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Cadastrar" type="button"
+								onclick="PF('login').show();" icon="ui-icon-plus"
+								style="background: #0000CD;" />
+							<p:commandButton value="Entrar" ajax="false" icon="ui-icon-play"
+								style="background: #339933;" action="#{login.logar}"/>
+						</div>
+					</f:facet>
+
+				</p:panelGrid>
+
+			</h:form>
+		</p:layoutUnit>
+
+		<h:form>
+			<p:dialog header="Cadastro" widgetVar="login" modal="true">
+				<p:panelGrid columns="2" style="width:100%;">
+					<f:facet name="header">
+						<p:outputLabel value="Dados Pessoais" />
+					</f:facet>
+					<p:outputLabel for="nome" value="Nome: " />
+					<p:inputText id="nome" value="#{alunoControllerElder.aluno.nome}"
+						required="true"
+						requiredMessage="O nome do aluno deve ser informado"
+						validatorMessage="O nome deve ter no máximo 100 caracteres"
+						label="Nome: ">
+						<f:validateLength maximum="100" />
+					</p:inputText>
+					<p:outputLabel for="mat" value="Matrícula: " />
+					<p:inputText id="mat"
+						value="#{alunoControllerElder.aluno.matricula}" required="true"
+						requiredMessage="O número da matrícula do aluno deve ser informado"
+						validatorMessage="O número da matrícula deve ter no máximo 10 caracteres"
+						label="Matrícula: ">
+						<f:validateLength maximum="10" />
+					</p:inputText>
+					<p:outputLabel for="cpf" value="CPF: " />
+					<p:inputText id="cpf" value="#{alunoControllerElder.cpf}"
+						required="true"
+						requiredMessage="O CPF do aluno deve ser informado"
+						validatorMessage="O CPF deve ter no mínimo 11 e no máximo 14 caracteres"
+						label="CPF: ">
+						<f:validateLength maximum="14" minimum="11" />
+					</p:inputText>
+					<p:outputLabel for="dtn" value="Data de Nascimento: " />
+					<p:calendar id="dtn"
+						value="#{alunoControllerElder.aluno.dataNascimento}"
+						required="true"
+						requiredMessage="A data de nascimento do aluno deve ser informada"
+						label="Data de Nascimento: " pattern="dd/MM/yyyy"
+						timeZone="America/Sao_Paulo" />
+
+					<p:outputLabel for="emailAluno" value="Email: " />
+					<p:inputText id="emailAluno"
+						value="#{alunoControllerElder.email}" required="true"
+						requiredMessage="O email do aluno deve ser informado"
+						validatorMessage="O email deve ter no máximo 100 caracteres"
+						label="Email: ">
+						<f:validateLength maximum="100" />
+					</p:inputText>
+					<p:outputLabel for="pass" value="Senha: " />
+					<p:password id="pass" value="#{alunoControllerElder.usuario.senha}"
+						required="true" requiredMessage="A senha é obrigatória"
+						validatorMessage="A senha deve conter no máximo 8 caracteres"
+						label="Senha: ">
+						<f:validateLength maximum="8" />
+					</p:password>
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Limpar" immediate="true" ajax="false"
+								icon="ui-icon-cancel" style="background: #ff0000;"
+								action="#{alunoControllerElder.limparCampos}" />
+							<p:commandButton value="Salvar"
+								action="#{alunoControllerElder.salvar}" ajax="false"
+								icon="ui-icon-check" style="background: #339933;" />
+						</div>
+					</f:facet>
+				</p:panelGrid>
+			</p:dialog>
+		</h:form>
+		<p:layoutUnit position="south" size="95" footer="">
+			<div>
+				<h:outputText
+					style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+					value="5º Período/DevWeb2" />
+				<br />
+				<h:outputText style="font-size:14px;" value="Sistemas de Informação" />
+			</div>
+			<div style="float: right; margin-top: -37px;">
+				<p:link
+					href="https://www.facebook.com/profile.php?id=100009047563244"
+					target="_blank">
+					<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+				</p:link>
+				<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+					<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+				</p:link>
+				<p:link href="https://twitter.com/elderteck" target="_blank">
+					<p:graphicImage url="/images/twiter.png" />
+				</p:link>
+				<br />
+				<h:outputText value="Élder Rezende" style="font-size:16px;" />
+			</div>
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+
+</html>

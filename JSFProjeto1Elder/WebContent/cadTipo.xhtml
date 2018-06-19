@@ -1,0 +1,162 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Tipos de Solicitações</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:layout fullPage="true">
+			<p:growl />
+			<p:layoutUnit position="north" header="">
+				<p:menubar>
+					<p:menuitem value="Home" url="home.xhtml" icon="ui-icon-home" />
+					<p:submenu label="Administração" icon="ui-icon-gear">
+						<p:submenu label="Cadastros" icon="ui-icon-pencil">
+							<p:menuitem value="Funcionários" url="cadFuncionario.xhtml"
+								icon="ui-icon-wrench" />
+							<p:menuitem value="Computadores" url="cadPc.xhtml"
+								icon="ui-icon-disk" />
+							<p:menuitem value="Laboratórios" url="cadLab.xhtml"
+								icon="ui-icon-calculator" />
+							<p:menuitem value="Tipo de Solicitação" url="cadTipo.xhtml"
+								icon="ui-icon-document" />
+							<p:menuitem value="Status do Retorno" url="cadStatus.xhtml"
+								icon="ui-icon-comment" />
+						</p:submenu>
+						<p:submenu label="Relatórios" icon="ui-icon-print">
+							<p:menuitem value="Todas Solicitações" url="listaSolicitacaoAdm.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:menuitem value="Não Atendidas" url="listaNaoAtendidasAdm.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:separator />
+							<p:menuitem value="Pesquisar" url="relatoriosAdm.xhtml"
+								icon="ui-icon-search" />
+						</p:submenu>
+						<p:submenu label="Retorno" icon="ui-icon-document">
+							<p:menuitem value="Listar" url="listaRetornoAdm.xhtml"
+								icon="ui-icon-script" />
+						</p:submenu>
+					</p:submenu>
+						<p:menuitem value="Usuários" url="usuarios.xhtml"
+							icon="ui-icon-document" />
+					<f:facet name="options">
+						<h:panelGrid columns="2">
+							<p:commandButton value="Sair" ajax="false"
+								action="#{login.deslogar}" immediate="true" />
+							<p:link
+								href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+								target="_blank">
+								<p:graphicImage url="/images/delta.png" />
+							</p:link>
+						</h:panelGrid>
+					</f:facet>
+				</p:menubar>
+			</p:layoutUnit>
+			<p:layoutUnit position="center" resizable="true"
+				header="Tipo de Solicitação" size="30%">
+				<p:panelGrid columns="2" style="width:100%;">
+					<f:facet name="header">
+						<p:outputLabel value="Cadastro" />
+					</f:facet>
+					<p:outputLabel for="nome" value="Nome: " />
+					<p:inputText id="nome"
+						value="#{tipoSolicitacaoControllerElder.tipo.nome}"
+						required="true"
+						requiredMessage="O tipo de solicitação deve ser informado"
+						validatorMessage="O tipo de solicitação deve ter no máximo 80 caracteres"
+						label="Nome: ">
+						<f:validateLength maximum="80" />
+					</p:inputText>
+					<p:outputLabel for="desc" value="Descrição: " />
+					<p:inputText id="desc"
+						value="#{tipoSolicitacaoControllerElder.tipo.descricao}"
+						label="Descrição "></p:inputText>
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Limpar" immediate="true" ajax="false"
+								icon="ui-icon-cancel" style="background: #ff0000;"
+								action="#{tipoSolicitacaoControllerElder.limparCampos}" />
+							<p:commandButton value="Salvar"
+								action="#{tipoSolicitacaoControllerElder.salvar}" ajax="false"
+								icon="ui-icon-check" style="background: #339933;" />
+						</div>
+					</f:facet>
+				</p:panelGrid>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="east" size="70%" header="Cadastrados"
+				resizable="true" effect="drop">
+
+				<p:dataTable value="#{tipoSolicitacaoControllerElder.listar}"
+					var="t" resizableColumns="true"
+					emptyMessage="Nenhum Tipo de Solicitação Cadastrada">
+					<f:facet name="header">
+						<h:outputText value="Tipos de Solicitações" />
+					</f:facet>
+					<p:column headerText="Id" style="width:14%;text-align:center;">
+						<h:outputText value="#{t.id}" />
+					</p:column>
+					<p:column headerText="Nome" style="width:20%;text-align:center;">
+						<h:outputText value="#{t.nome}" />
+					</p:column>
+					<p:column headerText="Descrição"
+						style="width:46%;text-align:center;">
+						<h:outputText value="#{t.descricao}" />
+					</p:column>
+					<p:column headerText="Ações" style="width:20%;">
+						<p:commandButton value="Editar"
+							action="#{tipoSolicitacaoControllerElder.alterar}"
+							icon="ui-icon-pencil" ajax="false" immediate="true"
+							style="background: #000099;">
+							<f:setPropertyActionListener value="#{t}"
+								target="#{tipoSolicitacaoControllerElder.tipo}" />
+						</p:commandButton>
+						<p:commandButton value="Excluir"
+							action="#{tipoSolicitacaoControllerElder.excluir}"
+							onclick="return confirm('Confirma a exclusão do Tipo de Solicitação com Id = #{t.id} ?')"
+							icon="ui-icon-trash" ajax="false" immediate="true"
+							style="background: #ff0000;">
+							<f:setPropertyActionListener value="#{t}"
+								target="#{tipoSolicitacaoControllerElder.tipo}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:layoutUnit>
+
+
+			<p:layoutUnit position="south" size="95" footer="">
+				<div>
+					<h:outputText
+						style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+						value="5º Período/DevWeb2" />
+					<br />
+					<h:outputText style="font-size:14px;"
+						value="Sistemas de Informação" />
+				</div>
+				<div style="float: right; margin-top: -37px;">
+					<p:link
+						href="https://www.facebook.com/profile.php?id=100009047563244"
+						target="_blank">
+						<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+						<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://twitter.com/elderteck" target="_blank">
+						<p:graphicImage url="/images/twiter.png" />
+					</p:link>
+					<br />
+					<h:outputText value="Élder Rezende" style="font-size:16px;" />
+				</div>
+			</p:layoutUnit>
+
+		</p:layout>
+
+	</h:form>
+</h:body>
+
+</html>

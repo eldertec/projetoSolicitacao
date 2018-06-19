@@ -1,0 +1,178 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Solicitações</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form id="form">
+		<p:layout fullPage="true">
+			<p:growl />
+			<p:layoutUnit position="north" header="">
+				<p:menubar>
+					<p:menuitem value="Home" url="homeFuncionario.xhtml"
+						icon="ui-icon-home" />
+					<p:menuitem value="Meus Dados" url="dadosFuncionario.xhtml"
+						icon="ui-icon-pencil" />
+						<p:submenu label="Relatórios" icon="ui-icon-print">
+							<p:menuitem value="Todas Solicitações" url="listaSolicitacao.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:menuitem value="Não Atendidas" url="listaNaoAtendidas.xhtml"
+								icon="ui-icon-folder-open" />
+							<p:separator />
+							<p:menuitem value="Pesquisar" url="relatorios.xhtml"
+								icon="ui-icon-search" />
+						</p:submenu>
+						<p:submenu label="Retorno" icon="ui-icon-document">
+							<p:menuitem value="Retornar" url="cadRetorno.xhtml"
+								icon="ui-icon-clipboard" />
+							<p:menuitem value="Listar" url="listaRetorno.xhtml"
+								icon="ui-icon-script" />
+						</p:submenu>
+					<f:facet name="options">
+						<h:panelGrid columns="2">
+							<p:commandButton value="Sair" ajax="false"
+								action="#{login.deslogar}" immediate="true" />
+							<p:link
+								href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+								target="_blank">
+								<p:graphicImage url="/images/delta.png" />
+							</p:link>
+						</h:panelGrid>
+					</f:facet>
+				</p:menubar>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center" header="Cadastradas">
+				<p:dataTable value="#{solicitacaoControllerElder.listar}" var="s"
+					resizableColumns="true"
+					emptyMessage="Nenhuma Solicitação cadastrada" rows="10"
+					paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">
+						<h:outputText value="Solicitações" />
+					</f:facet>
+					<p:column headerText="Id" style="width:5%;text-align:center;">
+						<h:outputText value="#{s.id}" />
+					</p:column>
+					<p:column headerText="Laboratório"
+						style="width:8%;text-align:center;">
+						<h:outputText value="#{s.laboratorio.numero}" />
+					</p:column>
+					<p:column headerText="Computador"
+						style="width:8%;text-align:center;">
+						<h:outputText value="#{s.computador.numero}" />
+					</p:column>
+					<p:column headerText="Data" style="width:8%;text-align:center;">
+						<h:outputText value="#{s.dataSolicitacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Aluno" style="width:10%;text-align:center;">
+						<h:outputText value="#{s.aluno.nome}" />
+					</p:column>
+					<p:column headerText="Tipo de Solicitação"
+						style="width:11%;text-align:center;">
+						<h:outputText value="#{s.tipo.nome}" />
+					</p:column>
+					<p:column headerText="Descrição"
+						style="width:45%;text-align:center;">
+						<h:outputText value="#{s.descricao}" />
+					</p:column>
+					<p:column headerText="Ações" style="width:6%;text-align:center;">
+						<p:commandButton update=":form:detAluno"
+							oncomplete="PF('modalAluno').show()" icon="ui-icon-search"
+							title="Detalhes do Aluno" style="background: #000099;">
+							<f:setPropertyActionListener value="#{s}"
+								target="#{solicitacaoControllerElder.solicitacao}" />
+						</p:commandButton>
+						<p:commandButton action="#{solicitacaoControllerElder.excluir}"
+							onclick="return confirm('Confirma a exclusão da Solicitação com Id = #{s.id} ?')"
+							icon="ui-icon-trash" ajax="false" immediate="true"
+							style="background: #ff0000;" title="Remover">
+							<f:setPropertyActionListener value="#{s}"
+								target="#{solicitacaoControllerElder.solicitacao}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:layoutUnit>
+
+			<p:dialog header="Detalhe do Solicitante" widgetVar="modalAluno"
+				modal="true" showEffect="blind" hideEffect="drop" resizable="false">
+				<p:outputPanel id="detAluno" style="text-align:center;">
+					<p:panelGrid columns="2"
+						rendered="#{not empty solicitacaoControllerElder.listar}"
+						columnClasses="label,value">
+						<f:facet name="header">
+							<h:outputText
+								value="Id da Solicitação: #{solicitacaoControllerElder.solicitacao.id}" />
+						</f:facet>
+
+						<h:outputText value="Id do Aluno:" />
+						<h:outputText
+							value="#{solicitacaoControllerElder.solicitacao.aluno.id}" />
+
+						<h:outputText value="Aluno:" />
+						<h:outputText
+							value="#{solicitacaoControllerElder.solicitacao.aluno.nome}" />
+
+						<h:outputText value="Matrícula:" />
+						<h:outputText
+							value="#{solicitacaoControllerElder.solicitacao.aluno.matricula}" />
+
+						<h:outputText value="Email:" />
+						<h:outputText
+							value="#{solicitacaoControllerElder.solicitacao.aluno.email}" />
+						<h:outputText value="CPF:" />
+						<h:outputText
+							value="#{solicitacaoControllerElder.solicitacao.aluno.cpf}" />
+						<h:outputText value="Data de Nascimento:" />
+						<h:outputText
+							value="#{solicitacaoControllerElder.solicitacao.aluno.dataNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+						<h:outputText value="Problema:" />
+						<h:outputText
+							value="#{solicitacaoControllerElder.solicitacao.descricao}" />
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+
+
+
+			<p:layoutUnit position="south" size="95" footer="">
+				<div>
+					<h:outputText
+						style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+						value="5º Período/DevWeb2" />
+					<br />
+					<h:outputText style="font-size:14px;"
+						value="Sistemas de Informação" />
+				</div>
+				<div style="float: right; margin-top: -37px;">
+					<p:link
+						href="https://www.facebook.com/profile.php?id=100009047563244"
+						target="_blank">
+						<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+						<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://twitter.com/elderteck" target="_blank">
+						<p:graphicImage url="/images/twiter.png" />
+					</p:link>
+					<br />
+					<h:outputText value="Élder Rezende" style="font-size:16px;" />
+				</div>
+			</p:layoutUnit>
+		</p:layout>
+	</h:form>
+</h:body>
+
+</html>

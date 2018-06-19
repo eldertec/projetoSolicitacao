@@ -1,0 +1,190 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<title>Solicitação</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:layout fullPage="true">
+			<p:growl />
+			<p:layoutUnit position="north" header="">
+				<p:menubar>
+					<p:menuitem value="Home" url="homeAluno.xhtml" icon="ui-icon-home" />
+					<p:menuitem value="Meus Dados" url="cadAluno.xhtml"
+						icon="ui-icon-pencil" />
+					<p:submenu label="Solicitações" icon="ui-icon-wrench">
+						<p:menuitem value="Nova Solicitação" url="cadSolicitacao.xhtml"
+							icon="ui-icon-plus" />
+						<p:menuitem value="Retornos" url="listaRetornoAluno.xhtml"
+							icon="ui-icon-search" />
+					</p:submenu>
+					<f:facet name="options">
+						<h:panelGrid columns="2">
+							<p:commandButton value="Sair" ajax="false"
+								action="#{login.deslogar}" immediate="true" />
+							<p:link
+								href="http://www.faculdadedelta.edu.br/site/index.php?inicio=true"
+								target="_blank">
+								<p:graphicImage url="/images/delta.png" />
+							</p:link>
+						</h:panelGrid>
+					</f:facet>
+				</p:menubar>
+			</p:layoutUnit>
+
+
+			<p:layoutUnit position="center" resizable="true"
+				header="Solicitações" size="30%">
+				<p:panelGrid columns="2" cellpadding="5" style="width:100%;">
+					<f:facet name="header">
+						<p:outputLabel value="Cadastrar" />
+					</f:facet>
+					<p:outputLabel for="dts" value="Data da Solicitação: " />
+					<p:calendar id="dts"
+						value="#{solicitacaoControllerElder.solicitacao.dataSolicitacao}"
+						pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" required="true"
+						requiredMessage="A Data é obrigatória" />
+					<p:outputLabel value="Aluno: " for="aluno" />
+					<p:selectOneMenu id="aluno" converter="alunoConverter"
+						required="true" requiredMessage="Selecione o Aluno!"
+						value="#{solicitacaoControllerElder.alunoSelecionado}"
+						autoWidth="false" style="width:85%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{alunoControllerElder.logado}" var="a"
+							itemLabel="#{a.nome}" itemValue="#{a}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Laboratório: " for="lab" />
+					<p:selectOneMenu id="lab" converter="laboratorioConverter"
+						required="true" requiredMessage="Selecione um laboratório!"
+						value="#{solicitacaoControllerElder.labSelecionado}"
+						autoWidth="false" style="width:85%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{laboratorioControllerElder.listar}"
+							var="l" itemLabel="#{l.numero}" itemValue="#{l}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Computador: " for="com" />
+					<p:selectOneMenu id="com" converter="computadorConverter"
+						required="true" requiredMessage="Selecione um computador!"
+						value="#{solicitacaoControllerElder.pcSelecionado}"
+						autoWidth="false" style="width:85%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{computadorControllerElder.listar}" var="c"
+							itemLabel="#{c.numero}" itemValue="#{c}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Tipo de Solicitação: " for="tipo" />
+					<p:selectOneMenu id="tipo" converter="tipoSolicitacaoConverter"
+						required="true" requiredMessage="Selecione um tipo!"
+						value="#{solicitacaoControllerElder.tipoSelecionado}"
+						autoWidth="false" style="width:85%;">
+						<f:selectItem itemLabel="SELECIONE" />
+						<f:selectItems value="#{tipoSolicitacaoControllerElder.listar}"
+							var="t" itemLabel="#{t.nome}" itemValue="#{t}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="desc" value="Descrição: " />
+					<p:inputTextarea id="desc"
+						value="#{solicitacaoControllerElder.solicitacao.descricao}"
+						label="Descrição " required="true"
+						requiredMessage="A Descrição do problema é obrigatória"
+						placeholder="Descreva o problema em no máximo 400 caracteres"
+						maxlength="400" style="width:100%;">
+						<f:validateLength maximum="400" />
+					</p:inputTextarea>
+					<f:facet name="footer">
+						<div style="text-align: right; padding: 5px;">
+							<p:commandButton value="Limpar" ajax="false" immediate="true"
+								action="#{solicitacaoControllerElder.limparCampos}"
+								style="background: #ff0000;" icon="ui-icon-cancel" />
+							<p:commandButton value="Salvar"
+								action="#{solicitacaoControllerElder.salvar}" ajax="false"
+								style="background: #339933;" icon="ui-icon-check" />
+
+						</div>
+					</f:facet>
+				</p:panelGrid>
+
+			</p:layoutUnit>
+
+			<p:layoutUnit position="east" size="70%" header="Cadastrados"
+				resizable="true" effect="drop">
+				<p:dataTable value="#{solicitacaoControllerElder.listarAluno}" var="s"
+					resizableColumns="true"
+					emptyMessage="Nenhuma Solicitação cadastrada" rows="10"
+					paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">
+						<h:outputText value="Minhas Solicitações" />
+					</f:facet>
+					<p:column headerText="Id" style="width:5%;text-align:center;">
+						<h:outputText value="#{s.id}" />
+					</p:column>
+					<p:column headerText="Laboratório"
+						style="width:10%;text-align:center;">
+						<h:outputText value="#{s.laboratorio.numero}" />
+					</p:column>
+					<p:column headerText="Computador"
+						style="width:10%;text-align:center;">
+						<h:outputText value="#{s.computador.numero}" />
+					</p:column>
+					<p:column headerText="Data" style="width:10%;text-align:center;">
+						<h:outputText value="#{s.dataSolicitacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Tipo de Solicitação"
+						style="width:15%;text-align:center;">
+						<h:outputText value="#{s.tipo.nome}" />
+					</p:column>
+					<p:column headerText="Descrição"
+						style="width:35%;text-align:center;">
+						<h:outputText value="#{s.descricao}" />
+					</p:column>
+					<p:column headerText="Ações" style="width:15%;text-align:center;">
+						<p:commandButton action="#{solicitacaoControllerElder.excluir}"
+							onclick="return confirm('Confirma a exclusão da Solicitação com Id = #{s.id} ?')"
+							icon="ui-icon-trash" ajax="false" immediate="true"
+							style="background: #ff0000;" title="Remover" value="Remover">
+							<f:setPropertyActionListener value="#{s}"
+								target="#{solicitacaoControllerElder.solicitacao}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				</p:layoutUnit>
+			
+			
+			<p:layoutUnit position="south" size="95" footer="">
+				<div>
+					<h:outputText
+						style="margin-left: 14px;margin-top: -4px;font-size:12px;"
+						value="5º Período/DevWeb2" />
+					<br />
+					<h:outputText style="font-size:14px;"
+						value="Sistemas de Informação" />
+				</div>
+				<div style="float: right; margin-top: -37px;">
+					<p:link
+						href="https://www.facebook.com/profile.php?id=100009047563244"
+						target="_blank">
+						<p:graphicImage url="/images/face.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://www.instagram.com/elderteck/" target="_blank">
+						<p:graphicImage url="/images/insta.png" style="margin-right:4px;" />
+					</p:link>
+					<p:link href="https://twitter.com/elderteck" target="_blank">
+						<p:graphicImage url="/images/twiter.png" />
+					</p:link>
+					<br />
+					<h:outputText value="Élder Rezende" style="font-size:16px;" />
+				</div>
+			</p:layoutUnit>
+
+		</p:layout>
+	</h:form>
+</h:body>
+
+</html>
